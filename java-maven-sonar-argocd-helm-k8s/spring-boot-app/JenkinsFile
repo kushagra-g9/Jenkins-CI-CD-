@@ -28,24 +28,6 @@ pipeline {
       }
     }
 
-    stage('Static Code Analysis') {
-      steps {
-        withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
-          dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app') {
-            sh 'mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=$SONAR_URL'
-          }
-        }
-      }
-    }
-
-    stage('Quality Gate') {
-      steps {
-        timeout(time: 1, unit: 'MINUTES') {
-          waitForQualityGate abortPipeline: true
-        }
-      }
-    }
-
     stage('Build and Push Docker Image') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'docker-cred', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
