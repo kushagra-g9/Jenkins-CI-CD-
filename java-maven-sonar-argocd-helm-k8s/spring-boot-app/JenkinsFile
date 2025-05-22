@@ -43,7 +43,7 @@ stage('Static Code Analysis') {
       withCredentials([string(credentialsId: 'maven-scan', variable: 'SONAR_AUTH_TOKEN')]) {
         dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app') {
           sh """
-            ${mvn}/bin/mvn clean verify sonar:sonar \
+            mvn clean verify sonar:sonar \
               -Dsonar.host.url=${SONAR_URL} \
               -Dsonar.token=${SONAR_AUTH_TOKEN}
           """
