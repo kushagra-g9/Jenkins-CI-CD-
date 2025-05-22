@@ -11,6 +11,7 @@ pipeline {
     GIT_REPO_NAME = "Jenkins-CI-CD"
     GIT_USER_NAME = "kushagra-g9"
     DOCKER_IMAGE = "abhishekf5/ultimate-cicd:${BUILD_NUMBER}"
+    SONAR_AUTH_TOKEN = "sonarqube"
   }
 
   stages {
