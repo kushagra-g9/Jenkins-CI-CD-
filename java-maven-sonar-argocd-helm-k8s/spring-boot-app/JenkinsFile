@@ -37,8 +37,6 @@ stage('Check Java Version') {
 stage('Static Code Analysis') {
   steps {
     script {
-      // Define Maven tool by name configured in Jenkins (adjust 'Default Maven' if yours differs)
-      def mvn = tool 'Default Maven'
 
       withCredentials([string(credentialsId: 'maven-scan', variable: 'SONAR_AUTH_TOKEN')]) {
         dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app') {
