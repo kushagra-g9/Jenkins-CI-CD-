@@ -11,7 +11,7 @@ pipeline {
     GIT_REPO_NAME = "Jenkins-CI-CD"
     GIT_USER_NAME = "kushagra-g9"
     DOCKER_IMAGE = "abhishekf5/ultimate-cicd:${BUILD_NUMBER}"
-    SONAR_AUTH_TOKEN = "maven-scan"
+    
   }
 
   stages {
@@ -35,15 +35,18 @@ stage('Check Java Version') {
 }
 
 stage('Static Code Analysis') {
+environment {
+    SONAR_TOKEN = credentials('maven-scan')  
+  }
   steps {
     script {
 
-      withCredentials([string(credentialsId: 'maven-scan', variable: 'SONAR_AUTH_TOKEN')]) {
+      withCredentials([string(credentialsId: 'maven-scan', variable: 'SONAR_TOKEN')]) {
         dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app') {
           sh """
             mvn clean verify sonar:sonar \
               -Dsonar.host.url=${SONAR_URL} \
-              -Dsonar.token=${SONAR_AUTH_TOKEN}
+              -Dsonar.token=$SONAR_TOKEN
           """
         }
       }
