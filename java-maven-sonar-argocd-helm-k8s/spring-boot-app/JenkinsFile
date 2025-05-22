@@ -36,8 +36,6 @@ stage('Check Java Version') {
 
 stage('Static Code Analysis') {
   steps {
-    script {
-      def mvn = tool 'Default Maven'  // <-- define mvn here
       withCredentials([string(credentialsId: 'maven-scan', variable: 'SONAR_AUTH_TOKEN')]) {
         dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app') {
           sh """
@@ -47,7 +45,7 @@ stage('Static Code Analysis') {
           """
         }
       }
-    }
+    
   }
 }
 
