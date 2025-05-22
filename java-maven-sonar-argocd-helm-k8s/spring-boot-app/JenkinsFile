@@ -7,7 +7,6 @@ pipeline {
   }
 
   environment {
-    SONAR_URL = "http://172.25.3.28:9000"
     GIT_REPO_NAME = "Jenkins-CI-CD"
     GIT_USER_NAME = "kushagra-g9"
     DOCKER_IMAGE = "abhishekf5/ultimate-cicd:${BUILD_NUMBER}"
@@ -28,31 +27,24 @@ pipeline {
         }
       }
     }
-stage('Check Java Version') {
-  steps {
-    sh 'java -version'
-  }
-}
+
 
 stage('Static Code Analysis') {
 environment {
-    SONAR_TOKEN = credentials('maven-scan')  
+SONAR_URL = "http://172.25.3.28:9000"
   }
   steps {
     script {
 
-      withCredentials([string(credentialsId: 'maven-scan', variable: 'SONAR_TOKEN')]) {
-        dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app') {
-          sh '''
-            mvn clean verify sonar:sonar \
-              -Dsonar.host.url=${SONAR_URL} \
-              -Dsonar.token=${env.SONAR_TOKEN}
-          '''
+      withCredentials([string(credentialsId: 'maven-scan', variable: 'SONAR_AUTH_TOKEN')]) {
+        sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
+              
+          
         }
       }
     }
   }
-}
+
 
 
 
