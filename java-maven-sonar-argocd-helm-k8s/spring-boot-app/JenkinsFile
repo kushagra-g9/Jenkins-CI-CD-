@@ -43,11 +43,11 @@ environment {
 
       withCredentials([string(credentialsId: 'maven-scan', variable: 'SONAR_TOKEN')]) {
         dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app') {
-          sh """
+          sh '''
             mvn clean verify sonar:sonar \
               -Dsonar.host.url=${SONAR_URL} \
               -Dsonar.token=$SONAR_TOKEN
-          """
+          '''
         }
       }
     }
