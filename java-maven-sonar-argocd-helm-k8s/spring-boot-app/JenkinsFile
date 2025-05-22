@@ -46,7 +46,7 @@ environment {
           sh '''
             mvn clean verify sonar:sonar \
               -Dsonar.host.url=${SONAR_URL} \
-              -Dsonar.token=$SONAR_TOKEN
+              -Dsonar.token=${env.SONAR_TOKEN}
           '''
         }
       }
